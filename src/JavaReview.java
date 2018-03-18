@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Predicate;
@@ -27,9 +30,14 @@ import java.util.stream.Stream;
 
 interface Number{
     Integer add(Integer i);
+    
+    //java 8 allows static methods in inerfaces
+    static int sum(int x, int y){
+        return x+y;
+    }
 }
 
-
+//An example class to demonstrate generics, its upperbound, upperbounded wildcards
 class Robot{
       public Robot(){}
       public boolean isRobot(){
@@ -53,6 +61,8 @@ class MyGenericClass<T, R>{
 
 
 public class JavaReview {
+    
+    //demonstrate for loop - basic 
     static Integer adder(List<Integer> l, Number n){
         Integer sum=0;
         for (Integer i: l){
@@ -61,19 +71,25 @@ public class JavaReview {
         return sum;
     }
   
-    
+    //function for demonstrating generic
     public static <T extends Robot>  boolean testRobot(T  param){
         return param.isRobot();
     };
  
+    //function for demonstrating geeneric
     static boolean function_using_generic_class(MyGenericClass<String, ? extends Robot>si ){
         return true;
-        
     }
     
+    //interface to demonstrate function reference, and lambda.
     interface MyLambda{
             int test();
-        }
+    }
+    
+    //a binary operator
+    public static int sum(int x, int y){
+        return x+y;
+    }
 
     /**
      * @param args the command line arguments
@@ -146,12 +162,46 @@ public class JavaReview {
         
         //streams, useful for doing filter, map, reduce functionality.
         List<Integer> myList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
-        Predicate<Integer>odd_nums=(num)->num%2==1;
+        Predicate<Integer>odd_nums = (num)->num%2==1;
         
         //filter takes Predicate<>
-        Stream s1=myList.stream().filter(odd_nums);
-    
-        Object o1=s1.collect(toList());
+        Stream<Integer> s1 = myList.stream().filter(odd_nums);
+        List<Integer> o1 = s1.collect(toList());
+        
+        //map example-return squares of each numbers in a list        
+        Function<Integer, Integer> lambda_squares = (value)->value*value; //returns the squares
+        Stream<Integer> s2 = myList.stream().map(lambda_squares);
+        List<Integer> o2 = s2.collect(Collectors.toList());
+        
+        //Combined
+        //python implementation: squares=list(map(lambda x:x*x, range(1,11,1)))
+        List<Integer>squares = myList.stream().map(lambda_squares).collect(Collectors.toList());
+        
+        //print the list using forEach
+        //public interface Consumer<T>{
+        //    void accept(T t);
+        //}    
+        //a lambda function to print anything
+        Consumer<Integer>lambda_consumer = (v)->System.out.println(v);
+        
+        //New foreach with consumer function reference
+        squares.forEach(lambda_consumer);
+        
+        
+        //reduce example
+        //python: sum_squares=reduce(lambda x, y:x+y, [i*i for i in range(10)])
+        BinaryOperator<Integer> lambda_sum_op=(x, y)->x+y;
+        Optional<Integer>non_null_or_null_result = myList.stream().map(lambda_squares).reduce(lambda_sum_op);
+        non_null_or_null_result.ifPresent(lambda_consumer);
+        
+        
+        //combined operations
+        myList.stream()
+                .map(lambda_squares)
+                .reduce(Number::sum) //using the function reference in interface Number
+                .ifPresent(lambda_consumer);
+        
+        
         
         //review of generics in java
         Robot r=new Robot();
