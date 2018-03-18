@@ -5,7 +5,7 @@
  */
 /*
 This source file provides some of the key features in java 8 for those who wants 
-to review those features quickly.
+to review them quickly.
 
 */
 
