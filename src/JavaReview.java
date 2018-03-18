@@ -3,6 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/*
+This source file provides some of the key features in java 8 for those who wants 
+to review those features quickly.
+
+*/
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,10 +37,10 @@ class Robot{
       }
       
      }
-class SmallRobot extends Robot{
+class MaleRobot extends Robot{
       
     }
-class BigRobot extends Robot{
+class FemaleRobot extends Robot{
       
     }
 
@@ -46,10 +51,7 @@ class MyGenericClass<T, R>{
     }
 }
 
-/**
- *
- * @author sanurhea
- */
+
 public class JavaReview {
     static Integer adder(List<Integer> l, Number n){
         Integer sum=0;
@@ -153,8 +155,8 @@ public class JavaReview {
         
         //review of generics in java
         Robot r=new Robot();
-        SmallRobot sr=new SmallRobot();
-        BigRobot br=new BigRobot();
+        MaleRobot sr=new MaleRobot();
+        FemaleRobot br=new FemaleRobot();
         
         //testRobot is generic method which accepts types of Robot
         //(either Robot or its derived types)
@@ -163,8 +165,8 @@ public class JavaReview {
         //testRobot(""); Not OK
         
         
-        //MyGericClass is generic class which accepts two types
-        MyGenericClass<String, SmallRobot> mgen=new MyGenericClass<>(); //OK
+        //MyGericClass is a generic class parametrized with two types
+        MyGenericClass<String, MaleRobot> mgen=new MyGenericClass<>(); //OK
         MyGenericClass<Integer, Robot> mgen2=new MyGenericClass<>();  //OK
         MyGenericClass<Integer, String> mgen3=new MyGenericClass<>();  //OK
         
